@@ -1,0 +1,26 @@
+{
+    "id": "1A05F02B",
+    "path": "~/Documents/GitHub/lungcancer_SBS4_TMB_IO/code/01_CES_variants_calculation_and_plot.R",
+    "project_path": "01_CES_variants_calculation_and_plot.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1748375624236.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "14,14",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1748456342,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1748456342,
+    "read_only": false,
+    "read_only_alternatives": []
+}
