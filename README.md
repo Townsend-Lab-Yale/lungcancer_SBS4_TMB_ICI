@@ -13,10 +13,10 @@ remotes::install_github("Townsend-Lab-Yale/cancereffectsizeR@v2.10.1", dependenc
 remotes::install_github("Townsend-Lab-Yale/ces.refset.hg19@*release", dependencies = T, force = T) 
 ```
 #### Demo 
-Expected output files can be found in R_data/epistasis_Oncogene_TSG_output.Rdata and R_data/epistasis_variant_TSG_output.Rdata
+Expected output files can be found in R_data directory
 #### Instructions for Use
-First, run `01_CES_variants_calculation_and_plot.R` file to process all maf files, calculate the cancer effect size information for all samples, smokers, and never-smokers, and also do the visualization.
-Then, run `02_epistasis_variant_TSG.R` file to perform epistasis analysis between a variant and a gene, and also do the visualization.
+First, run `01_CES_analysis.R` file to process all maf files, calculate the cancer effect size information for all samples, smokers, and never-smokers.
+Then, run `02_model_plot.R` file to do the analysis and visualization of fig1 and fig2.
 More detailed annotations can be found in the code files.
 #### License
 All codes are licensed under GNU General Public License v3.0
