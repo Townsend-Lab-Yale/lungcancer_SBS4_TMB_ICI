@@ -448,7 +448,7 @@ cesa <- load_maf(
 )
 cesa <- load_maf(cesa, maf = NCI_maf, coverage = 'genome', maf_name = 'NCI')
 
-save_cesa(cesa, paste0(rdata_output, "load_maf_cesa_WES_TGS_WGS.rds"))
+# save_cesa(cesa, paste0(rdata_output, "load_maf_cesa_WES_TGS_WGS.rds"))
 
 cesa_smoking_w_panel <- cesa
 cesa_nonsmoking_w_panel <- cesa
@@ -546,6 +546,11 @@ panel_nonsmoking_samples = unique(maf_clinical[
 ][Smoker == F, `Sample ID`])
 length(sample_with_clinInfo)
 
+sample_pan_forCsea <- cesa$samples[
+  Unique_Patient_Identifier %in% sample_with_clinInfo,
+  Unique_Patient_Identifier
+]
+
 sample_smo_wP_forCesa <- cesa_smoking_w_panel$samples[
   Unique_Patient_Identifier %in%
     c(
@@ -607,6 +612,12 @@ cesa_nonsmoking_w_panel <- trinuc_mutation_rates(
   cores = 4
 )
 
+### calculate gene mutation rates for pan data ####
+cesa <- gene_mutation_rates(
+  cesa,
+  covariates = "lung",
+  samples = sample_pan_forCsea
+)
 
 ### calculate gene mutation rates for smokers ####
 cesa_smoking_w_panel = gene_mutation_rates(
@@ -625,6 +636,13 @@ cesa_nonsmoking_w_panel = gene_mutation_rates(
 
 
 ## calculate cancer effect size ####
+### calculate cancer effect size for pan data #####
+cesa <- ces_variant(
+  cesa = cesa,
+  run_name = "recurrents",
+  samples = sample_pan_forCsea
+)
+
 ### calculate cancer effect size for smokers #####
 cesa_smoking_w_panel <- ces_variant(
   cesa = cesa_smoking_w_panel,
@@ -662,5 +680,14 @@ table(
 # exome   genome targeted
 # 304      190      162
 
-save_cesa(cesa_smoking_w_panel, paste0(rdata_output, "cesa_smoking.rds"))
-save_cesa(cesa_nonsmoking_w_panel, paste0(rdata_output, "cesa_nonsmoking.rds"))
+### save data for further analysis
+save_cesa(cesa, paste0(rdata_output, "luad_cesa_object_pan.rds"))
+save_cesa(
+  cesa_smoking_w_panel,
+  paste0(rdata_output, "luad_cesa_object_smoker.rds")
+)
+save_cesa(
+  cesa_nonsmoking_w_panel,
+  paste0(rdata_output, "luad_cesa_object_ns.rds")
+)
+saveRDS(sample_pan_forCsea, paste0(rdata_output, "sample_pan_forCESA.rds"))

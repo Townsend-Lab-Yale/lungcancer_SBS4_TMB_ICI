@@ -9,11 +9,11 @@ library(stringr)
 library(ggplot2)
 
 ## load data
-cesa <- load_cesa("luad_cesa_object_pan.rds")
-cesa_smoking <- load_cesa("luad_cesa_object_smoker.rds")
-cesa_nonsmoking <- load_cesa("luad_cesa_object_ns.rds")
+cesa <- load_cesa(paste0(rdata_output, "luad_cesa_object_pan.rds"))
+cesa_smoking <- load_cesa(paste0(rdata_output, "luad_cesa_object_smoker.rds"))
+cesa_nonsmoking <- load_cesa(paste0(rdata_output, "luad_cesa_object_ns.rds"))
 
-sample_pan_forCsea <- readRDS("sample_pan_forCESA.rds")
+sample_pan_forCsea <- readRDS(paste0(rdata_output, "sample_pan_forCESA.rds"))
 ## CES values of KRAS variants ####
 target_effect_KRAS <- rbind(
   cesa$selection$recurrent[gene %in% c("KRAS")][, group := "All"][],
@@ -76,7 +76,7 @@ target_effect_KRAS_sub[,
 
 ### Fig1 ####
 ## only show all group
-p_ces_KRAS <- ggplot(
+p_KRAS_CES <- ggplot(
   target_effect_KRAS_sub[group %in% c("All") & !is.na(variant_name_s)],
   aes(x = variant_name_s, y = selection_intensity)
 ) +
@@ -132,8 +132,8 @@ p_ces_KRAS <- ggplot(
     size = guide_legend(order = 2) # size legend second
   )
 
-svg(file = "p_CES_KRAS.svg", height = 7, width = 13.5)
-p_ces_KRAS
+svg(file = "p_KRAS_CES.svg", height = 7, width = 13.5)
+p_KRAS_CES
 dev.off()
 
 
@@ -353,7 +353,7 @@ summary(KRAS_mut_tar_sample_biologWei[!coverage %in% c("targeted")]$SBS4)
 length(KRAS_mut_tar_sample_biologWei$Unique_Patient_Identifier)
 length(unique(KRAS_mut_tar_sample_biologWei$Unique_Patient_Identifier))
 ### Fig 2A #####
-p_G12C_SBS4 <- ggplot(
+p_G12_SBS4 <- ggplot(
   data = KRAS_mut_tar_sample_biologWei[!coverage %in% c("targeted")],
   aes(x = top_consequence, y = SBS4)
 ) +
@@ -394,7 +394,7 @@ p_G12C_SBS4 <- ggplot(
     y.position = c(0.95, 0.98, 1.01)
   )
 
-ggsave(file = "p_G12_SBS4.svg", plot = p_G12C_SBS4)
+ggsave(file = "p_G12_SBS4.svg", plot = p_G12_SBS4)
 
 
 ## linear regression of TMB   and SBS4 attribution (strong positive association, suggesting  that smoking is a major contribution to TMB in lung cancer#####
@@ -678,7 +678,7 @@ df_RR <- data.frame(
   SBS4 = sbs4_seq,
   RR = RR_from_SBS4(sbs4_seq)
 )
-p_RR_SBS4_line_point_blackline <- ggplot() +
+p_SBS4_RR_line_point_blackline <- ggplot() +
   geom_line(data = df_RR, aes(x = SBS4, y = RR), color = "black", size = 2) +
   scale_y_continuous(
     limits = c(0, 1),
@@ -738,7 +738,7 @@ p_RR_SBS4_line_point_blackline <- ggplot() +
   )
 
 
-ggsave(file = "p_RR_SBS4.svg", plot = p_RR_SBS4_line_point_blackline)
+ggsave(file = "p_SBS4_RR.svg", plot = p_SBS4_RR_line_point_blackline)
 
 #### Fig 2 E ####
 HR_median_G12C <- median(df_all[KRAS_variant == "G12C", HR_TMB])
@@ -756,7 +756,7 @@ df_HR <- data.frame(
   SBS4 = sbs4_seq,
   HR = HR_from_SBS4(sbs4_seq)
 )
-p_HR_SBS4_line_point_blackline <- ggplot() +
+p_SBS4_HR_line_point_blackline <- ggplot() +
   geom_line(data = df_HR, aes(x = SBS4, y = HR), color = "black", size = 2) +
   scale_x_continuous(
     limits = c(0, 1),
@@ -815,4 +815,4 @@ p_HR_SBS4_line_point_blackline <- ggplot() +
     axis.title.x = element_text(size = 18, face = "bold")
   )
 
-ggsave(file = "p_HR_SBS4.svg", plot = p_HR_SBS4_line_point_blackline)
+ggsave(file = "p_SBS4_HR.svg", plot = p_SBS4_HR_line_point_blackline)
